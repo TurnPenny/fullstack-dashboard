@@ -69,9 +69,59 @@ const Sidebar = ({
               </FlexBetween>
             </Box>
             <List>
-              {navItems.map((item) => (
-                <div>{item.text}</div>
-              ))}
+              {navItems.map(({ text, icon }) => {
+                if (!icon) {
+                  return (
+                    <Typography
+                      key={text + icon}
+                      sx={{ m: '2.25rem 0 1rem 3rem' }}
+                    >
+                      {text}
+                    </Typography>
+                  );
+                }
+                const lowerText = text.toLowerCase();
+                return (
+                  <ListItem key={text + icon} disablePadding>
+                    <ListItemButton
+                      sx={{
+                        backgroundColor:
+                          active === lowerText
+                            ? theme.palette.secondary[300]
+                            : 'transparent',
+                        color:
+                          active === lowerText
+                            ? theme.palette.primary[600]
+                            : theme.palette.secondary[100],
+                      }}
+                      onClick={() => {
+                        navigate(`/${lowerText}`);
+                        setActive(lowerText);
+                      }}
+                    >
+                      <ListItemIcon
+                        sx={{
+                          ml: '2rem',
+                          color:
+                            active === lowerText
+                              ? theme.palette.primary[600]
+                              : theme.palette.secondary[200],
+                        }}
+                      >
+                        {icon}
+                      </ListItemIcon>
+                      <ListItemText primary={text} />
+                      {active === lowerText && (
+                        <ChevronRightOutlined
+                          sx={{
+                            ml: 'auto',
+                          }}
+                        />
+                      )}
+                    </ListItemButton>
+                  </ListItem>
+                );
+              })}
             </List>
           </Box>
         </Drawer>
